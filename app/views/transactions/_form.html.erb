@@ -1,44 +1,38 @@
 <%= form_with(model: transaction) do |form| %>
-  <% if transaction.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
-
-      <ul>
-        <% transaction.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <div>
     <%= form.label :input_type, style: "display: block" %>
     <%= form.text_field :input_type %>
+    <%= errors_for(form, :input_type) %>
   </div>
 
   <div>
     <%= form.label :date, style: "display: block" %>
     <%= form.date_field :date %>
+    <%= errors_for(form, :date) %>
   </div>
 
   <div>
     <%= form.label :value, style: "display: block" %>
     <%= form.text_field :value %>
+    <%= errors_for(form, :value) %>
   </div>
 
   <div>
     <%= form.label :installments, style: "display: block" %>
     <%= form.number_field :installments %>
+    <%= errors_for(form, :installments) %>
   </div>
 
   <div>
     <%= form.label :category, style: "display: block" %>
     <%= form.text_field :category %>
+    <%= errors_for(form, :category) %>
   </div>
 
   <div>
     <%= form.label :subcategory, style: "display: block" %>
     <%= form.text_field :subcategory %>
+    <%= errors_for(form, :subcategory) %>
   </div>
 
   <div>
