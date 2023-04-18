@@ -1,13 +1,9 @@
 class TransactionsController < ApplicationController
-  before_action :set_transaction, only: %i[ show edit update destroy ]
+  before_action :set_transaction, only: %i[ edit update destroy ]
 
   # GET /transactions or /transactions.json
   def index
     @transactions = Transaction.all
-  end
-
-  # GET /transactions/1 or /transactions/1.json
-  def show
   end
 
   # GET /transactions/new
@@ -25,8 +21,9 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.save
-        format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully created." }
-        format.json { render :show, status: :created, location: @transaction }
+        binding.pry
+        format.html { redirect_to transactions_url, notice: "Transaction was successfully created." }
+        format.json { render :index, status: :created, location: @transaction }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
@@ -38,8 +35,8 @@ class TransactionsController < ApplicationController
   def update
     respond_to do |format|
       if @transaction.update(transaction_params)
-        format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully updated." }
-        format.json { render :show, status: :ok, location: @transaction }
+        format.html { redirect_to transactions_url, notice: "Transaction was successfully updated." }
+        format.json { render :index, status: :ok, location: @transaction }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
