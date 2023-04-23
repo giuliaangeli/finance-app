@@ -1,14 +1,44 @@
-<p style="color: green"><%= notice %></p>
+<div class = "my-5 mx-5">
+  <div class = "d-flex mb-3">
+      <button class = "btn btn-outline-secondary btn-lg p-2"><i class="bi bi-eye-fill"></i> ANÁLISES</button>
+      <button class = "btn btn-outline-secondary btn-lg p-2 mx-4"><i class="bi bi-arrow-left-right"></i> ENTRADAS & SAÍDAS</button>
+      <button class = "btn btn-outline-secondary btn-lg ms-auto p-2">SAIR</button>
+  </div>
 
-<h1>Transactions</h1>
+  <div class = "text-white">
+    <p id="notice"><%= notice %></p>
+    <div class = "py-3"> 
+      <%= link_to new_transaction_path, class: "btn btn-light btn-outline-secondary btn-lg p-2" do %><i class="bi bi-plus-circle"> ADICIONAR</i><% end %>
+    </div>
+    <div class = "table-responsive"> 
+      <table class = "table table-striped rounded rounded-3 align-middle overflow-hidden table-hover">
+        <thead>
+          <tr>
+            <th>TIPO</th>
+            <th>DATA</th>
+            <th>VALOR</th>
+            <th>N° PARCELAS</th>
+            <th>CATEGORIA</th>
+            <th>SUBCATEGORIA</th>
+            <th colspan="2"></th>
+          </tr>
+        </thead>
 
-<div id="transactions">
-  <% @transactions.each do |transaction| %>
-    <%= render transaction %>
-    <p>
-      <%= link_to "Show this transaction", transaction %>
-    </p>
-  <% end %>
+        <tbody>
+          <% @transactions.each do |transaction| %>
+            <tr>
+              <td><%= transaction.input_type %></td>
+              <td><%= transaction.date %></td>
+              <td><%= transaction.value %></td>
+              <td><%= transaction.installments %></td>
+              <td><%= transaction.category %></td>
+              <td><%= transaction.subcategory %></td>
+              <td><%= link_to edit_transaction_path(transaction), class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-pencil"></i><% end %></td>
+              <td><%= button_to transaction, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-trash3"></i><% end %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-
-<%= link_to "New transaction", new_transaction_path %>
