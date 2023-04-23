@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
-  namespace :users_backoffice do
-    get 'welcome/index'
-  end
+  root to: 'welcome#index'
   devise_for :users
-
-  resources :users do
-    resources :transactions, only: [:index, :new, :create, :edit, :update, :destroy]
+  devise_scope :user do  
+    get '/users/sign_out' => 'devise/sessions#destroy'     
   end
+  resources :transactions
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
