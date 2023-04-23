@@ -1,14 +1,15 @@
 class TransactionsController < ApplicationController
+  before_action :set_user
   before_action :set_transaction, only: %i[ edit update destroy ]
 
   # GET /transactions or /transactions.json
   def index
-    @transactions = Transaction.all
+    @transactions = @user.Transaction.all
   end
 
   # GET /transactions/new
   def new
-    @transaction = Transaction.new
+    @transaction = @user.Transaction.new
   end
 
   # GET /transactions/1/edit
@@ -17,12 +18,11 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+    @transaction = @user.Transaction.new(transaction_params)
 
     respond_to do |format|
       if @transaction.save
-        binding.pry
-        format.html { redirect_to transactions_url, notice: "Transaction was successfully created." }
+        format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully created." }
         format.json { render :index, status: :created, location: @transaction }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +35,7 @@ class TransactionsController < ApplicationController
   def update
     respond_to do |format|
       if @transaction.update(transaction_params)
-        format.html { redirect_to transactions_url, notice: "Transaction was successfully updated." }
+        format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully updated." }
         format.json { render :index, status: :ok, location: @transaction }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -49,15 +49,19 @@ class TransactionsController < ApplicationController
     @transaction.destroy
 
     respond_to do |format|
-      format.html { redirect_to transactions_url, notice: "Transaction was successfully destroyed." }
+      format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
-      @transaction = Transaction.find(params[:id])
+      @transaction = @user.Transaction.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

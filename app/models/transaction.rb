@@ -1,3 +1,4 @@
 class Transaction < ApplicationRecord
-    validates :input_type, :date, :value, :installments, :category, :subcategory, presence:true
+    belongs_to :user, optional: false
+    validates :input_type, :date, :value, :installments, :category, :subcategory, :user, presence:true
 end
