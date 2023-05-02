@@ -5,13 +5,11 @@ one:
   date: 2023-04-15
   value: 1.5
   installments: 1
-  category: MyString
-  subcategory: MyString
+  tag_id: 1
 
 two:
   input_type: MyString
   date: 2023-04-15
   value: 1.5
   installments: 1
-  category: MyString
-  subcategory: MyString
+  tag_id: 2

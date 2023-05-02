@@ -3,7 +3,10 @@
     <div class="col-6 card p-3 class">
       <div>
         <%= form.label :input_type, style: "display: block" %>
-        <%= form.text_field :input_type, class: "form-control" %>
+        <%= form.radio_button :input_type, "Entrada"%>
+        <%= form.label :input_type, 'Entrada', :value => 'entrada' %>
+        <%= form.radio_button :input_type, "Saída" %>
+        <%= form.label :input_type, 'Saída', :value => 'saida' %>
         <%= errors_for(form, :input_type) %>
       </div>
 
@@ -26,15 +29,9 @@
       </div>
 
       <div>
-        <%= form.label :category, style: "display: block" %>
-        <%= form.text_field :category, class: "form-control", id: "toggleSubcategory", onchange: "toggleSubcategory()" %>
-        <%= errors_for(form, :category) %>
-      </div>
-
-      <div id="div_subcategory">
-        <%= form.label :subcategory, style: "display: block" %>
-        <%= form.text_field :subcategory, class: "form-control" %>
-        <%= errors_for(form, :subcategory) %>
+        <%= form.label :tag_id, style: "display: block" %>
+        <%= form.collection_select(:tag_id, Tag.order('subcategory'), :id, :subcategory, {include_blank: true}, {class: 'form-control'}) %>
+        <%= errors_for(form, :tag_id) %>
       </div>
 
       <div class="mt-2">

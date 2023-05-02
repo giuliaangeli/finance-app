@@ -14,11 +14,10 @@ class TransactionsTest < ApplicationSystemTestCase
     visit transactions_url
     click_on "New transaction"
 
-    fill_in "Category", with: @transaction.category
     fill_in "Date", with: @transaction.date
     fill_in "Input type", with: @transaction.input_type
     fill_in "Installments", with: @transaction.installments
-    fill_in "Subcategory", with: @transaction.subcategory
+    fill_in "Tag", with: @transaction.tag_id
     fill_in "Value", with: @transaction.value
     click_on "Create Transaction"
 
@@ -30,11 +29,10 @@ class TransactionsTest < ApplicationSystemTestCase
     visit transaction_url(@transaction)
     click_on "Edit this transaction", match: :first
 
-    fill_in "Category", with: @transaction.category
     fill_in "Date", with: @transaction.date
     fill_in "Input type", with: @transaction.input_type
     fill_in "Installments", with: @transaction.installments
-    fill_in "Subcategory", with: @transaction.subcategory
+    fill_in "Tag", with: @transaction.tag_id
     fill_in "Value", with: @transaction.value
     click_on "Update Transaction"
 

@@ -4,12 +4,13 @@ class TransactionsController < ApplicationController
 
   # GET /transactions or /transactions.json
   def index
-    @transactions = @user.Transaction.all
+    @transactions = @user.transactions.all
+    @tag = Tag.all
   end
 
   # GET /transactions/new
   def new
-    @transaction = @user.Transaction.new
+    @transaction = @user.transactions.new
   end
 
   # GET /transactions/1/edit
@@ -18,8 +19,8 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
-    @transaction = @user.Transaction.new(transaction_params)
-
+    @transaction = @user.transactions.new(transaction_params)
+    
     respond_to do |format|
       if @transaction.save
         format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully created." }
@@ -56,16 +57,16 @@ class TransactionsController < ApplicationController
 
   private
     def set_user
-      @user = User.find(params[:user_id])
+      @user = current_user
     end
     
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
-      @transaction = @user.Transaction.find(params[:id])
+      @transaction = Transaction.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def transaction_params
-      params.require(:transaction).permit(:input_type, :date, :value, :installments, :category, :subcategory)
+      params.require(:transaction).permit(:input_type, :date, :value, :installments, :tag_id)
     end
 end

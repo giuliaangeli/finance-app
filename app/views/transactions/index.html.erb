@@ -1,10 +1,4 @@
 <div class = "my-5 mx-5">
-  <div class = "d-flex mb-3">
-      <button class = "btn btn-outline-secondary btn-lg p-2"><i class="bi bi-eye-fill"></i> ANÁLISES</button>
-      <button class = "btn btn-outline-secondary btn-lg p-2 mx-4"><i class="bi bi-arrow-left-right"></i> ENTRADAS & SAÍDAS</button>
-      <button class = "btn btn-outline-secondary btn-lg ms-auto p-2">SAIR</button>
-  </div>
-
   <div class = "text-white">
     <p id="notice"><%= notice %></p>
     <div class = "py-3"> 
@@ -28,11 +22,11 @@
           <% @transactions.each do |transaction| %>
             <tr>
               <td><%= transaction.input_type %></td>
-              <td><%= transaction.date %></td>
+              <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
               <td><%= transaction.value %></td>
               <td><%= transaction.installments %></td>
-              <td><%= transaction.category %></td>
-              <td><%= transaction.subcategory %></td>
+              <td><%= @tag.find(transaction.tag_id).category %></td>
+              <td><%= @tag.find(transaction.tag_id).subcategory %></td>
               <td><%= link_to edit_transaction_path(transaction), class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-pencil"></i><% end %></td>
               <td><%= button_to transaction, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-trash3"></i><% end %></td>
             </tr>
