@@ -1,1 +1,26 @@
-<h1>Em breve algo...</h1>
+<div class = "shadow-lg p-3 ml-2 bg-white rounded">
+    <h2>Gastos por categoria (Mês Atual) </h2>
+    <%= pie_chart @category_data, donut: true %>
+</div>
+<div class = "shadow-lg p-3 mb-5 bg-white rounded">
+    <h2> Gastos por subcategoria </h2>
+    <%= bar_chart @subcategory_data, stacked: true %>
+</div>
+
+<div class = "shadow-lg p-3 mr-2 bg-white rounded">
+    <h2> Entradas vs. Saídas </h2>
+    <%= line_chart @line_chart.map { |transaction|
+        { name: transaction[:name], data: transaction[:data] }
+    } %>
+</div>
+
+
+<div class = "shadow-lg p-3 mb-5 bg-white rounded">
+    <h2> Gastos por categoria </h2>
+    <%= column_chart @category_data_chart, stacked: true %>
+</div>
+
+<div class = "shadow-lg p-3 mb-5 bg-white rounded">
+    <h2> Gastos por subcategoria </h2>
+    <%= column_chart @subcategory_data, stacked: true %>
+</div>
