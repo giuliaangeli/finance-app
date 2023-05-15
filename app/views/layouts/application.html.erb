@@ -15,10 +15,10 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-dark bg-dark py-4 px-4">
+    <nav class="container py-5">
+      <%= render 'shared/navbar' %>
     </nav>
-    <%= render 'shared/navbar' %>
-    <div class="container py-5">
+    <div class="container">
       <% if notice.present? %>
         <p class="alert alert-success" style="color: green"><%= notice %></p>
       <% end %>

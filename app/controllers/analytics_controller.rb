@@ -17,9 +17,9 @@ class AnalyticsController < TransactionsController
     end
 
     def subcategory_review
-        @subcategory_data = @transactions.find_by_sql(["SELECT transactions.value, transactions.date, tags.* FROM transactions INNER JOIN tags ON tags.id = transactions.tag_idWHERE date > ? AND date < ?", Date.today.at_beginning_of_month, Date.today]).group_by { |t| [t.subcategory] }
-        @subcategory_data = @subcategory_data.map { |(subcategory, date), transactions|
-            { name: subcategory, data: { date => transactions.sum(&:value) } }
+        @subcategory_data = @transactions.find_by_sql(["SELECT transactions.value, tags.* FROM transactions INNER JOIN tags ON tags.id = transactions.tag_id WHERE date > ? AND date < ?", Date.today.at_beginning_of_month, Date.today]).group_by { |t| [t.subcategory, t.category] }
+        @subcategory_data = @subcategory_data.map { |(subcategory, category), transactions|
+            { name: subcategory, data: { category => transactions.sum(&:value) } }
             }.group_by { |data| data[:name] }.map { |name, values|
                 { name: name, data: values.flat_map { |data| data[:data].to_a } }
             }
