@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root :to => redirect("/users/sign_in")
+  get '/nana', to: 'users/sessions#new'
   get '/analytics', to: 'analytics#index'
   devise_for :users
   devise_scope :user do  

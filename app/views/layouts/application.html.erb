@@ -14,11 +14,9 @@
     </script>
   </head>
 
-  <body>
-    <nav class="container py-5">
-      <%= render 'shared/navbar' %>
-    </nav>
-    <div class="container">
+  <body class="vh-100">
+    <%= render 'shared/navbar' %>
+    <div class="container h-100">
       <% if notice.present? %>
         <p class="alert alert-success" style="color: green"><%= notice %></p>
       <% end %>

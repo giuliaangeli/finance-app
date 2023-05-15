@@ -1,38 +1,36 @@
-<div class = "my-5 mx-5">
-  <div class = "text-white">
-    <p id="notice"><%= notice %></p>
-    <div class = "py-3"> 
-      <%= link_to new_transaction_path, class: "btn btn-light btn-outline-secondary btn-lg p-2" do %><i class="bi bi-plus-circle"> ADICIONAR</i><% end %>
-    </div>
-    <div class = "table-responsive"> 
-      <table class = "table table-striped rounded rounded-3 align-middle overflow-hidden table-hover">
-        <thead>
-          <tr>
-            <th>TIPO</th>
-            <th>DATA</th>
-            <th>VALOR</th>
-            <th>N° PARCELAS</th>
-            <th>CATEGORIA</th>
-            <th>SUBCATEGORIA</th>
-            <th colspan="2"></th>
-          </tr>
-        </thead>
+<div class = "text-white">
+  <p id="notice"><%= notice %></p>
+  <div class = "py-3"> 
+    <%= link_to new_transaction_path, class: "btn btn-light btn-outline-secondary btn-lg p-2" do %><i class="bi bi-plus-circle"> ADICIONAR</i><% end %>
+  </div>
+  <div class = "table-responsive"> 
+    <table class = "table table-striped rounded rounded-3 align-middle overflow-hidden table-hover">
+      <thead>
+        <tr>
+          <th>TIPO</th>
+          <th>DATA</th>
+          <th>VALOR</th>
+          <th>N° PARCELAS</th>
+          <th>CATEGORIA</th>
+          <th>SUBCATEGORIA</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <% @transactions.each do |transaction| %>
-            <tr>
-              <td><%= transaction.input_type %></td>
-              <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
-              <td><%= transaction.value %></td>
-              <td><%= transaction.installments %></td>
-              <td><%= @tag.find(transaction.tag_id).category %></td>
-              <td><%= @tag.find(transaction.tag_id).subcategory %></td>
-              <td><%= link_to edit_transaction_path(transaction), class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-pencil"></i><% end %></td>
-              <td><%= button_to transaction, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-trash3"></i><% end %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td><%= transaction.input_type %></td>
+            <td><%= transaction.date.strftime("%d/%m/%Y") %></td>
+            <td><%= transaction.value %></td>
+            <td><%= transaction.installments %></td>
+            <td><%= @tag.find(transaction.tag_id).category %></td>
+            <td><%= @tag.find(transaction.tag_id).subcategory %></td>
+            <td><%= link_to edit_transaction_path(transaction), class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-pencil"></i><% end %></td>
+            <td><%= button_to transaction, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm" do %><i class="bi bi-trash3"></i><% end %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
