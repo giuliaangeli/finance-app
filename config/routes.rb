@@ -7,7 +7,11 @@ Rails.application.routes.draw do
     get '/users/sign_out' => 'devise/sessions#destroy'     
     get '/home', to: 'transactions#index', as: :user_root
   end
-  resources :transactions
+  resources :transactions do
+    collection do
+       post :import
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

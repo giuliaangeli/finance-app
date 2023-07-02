@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+  require "csv"
+
   before_action :set_user
   before_action :set_transaction, only: %i[ edit update destroy ]
 
@@ -53,6 +55,29 @@ class TransactionsController < ApplicationController
       format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def import
+    file = params[:file]
+    return redirect_to transactions_path, notice: "Only CSV, please" unless file.content_type == "text/csv"
+
+    file = File.open(file)
+    csv = CSV.readlines(file, headers: true, col_sep: ',')
+    csv.each do |row|
+      transaction_hash = {}
+      transaction_hash[:input_type] = row['input_type']
+      transaction_hash[:date] = row['date']
+      transaction_hash[:value] = row['value'].to_i.abs
+      transaction_hash[:installments] = row['installments']
+      transaction_hash[:tag_id] = find_tag_id(row['subcategory'])
+      transaction_hash[:user_id] = current_user.id
+      Transaction.create(transaction_hash)
+    end
+    redirect_to transactions_path, notice: "Import done!"
+  end
+
+  def find_tag_id(subcategory)
+    Tag.find_by(subcategory: subcategory).id
   end
 
   private

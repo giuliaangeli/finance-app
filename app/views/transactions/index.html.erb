@@ -3,6 +3,12 @@
   <div class = "py-3"> 
     <%= link_to new_transaction_path, class: "btn btn-light btn-outline-secondary btn-lg p-2" do %><i class="bi bi-plus-circle"> ADICIONAR</i><% end %>
   </div>
+  
+  <%= form_with url: import_transactions_path, method: :post do |form| %>
+    <%= form.file_field :file %>
+    <%= form.button "IMPORTAR" %>
+  <% end %>
+
   <div class = "table-responsive"> 
     <table class = "table table-striped rounded rounded-3 align-middle overflow-hidden table-hover">
       <thead>
