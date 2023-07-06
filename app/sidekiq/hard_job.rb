@@ -6,6 +6,7 @@ class HardJob
       transaction_hash = Hash[header.zip(row)]
       transaction_hash["tag_id"] = Tag.find_by(subcategory: transaction_hash["tag_id"]).id
       transaction_hash["user_id"] = current_user
+      Transaction.create(transaction_hash)
     end
   end
 end
