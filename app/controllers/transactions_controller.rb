@@ -58,29 +58,35 @@ class TransactionsController < ApplicationController
   end
 
   def import
+    set_user
     file = params[:file]
     return redirect_to transactions_path, notice: "Only CSV, please" unless file.content_type == "text/csv"
 
     file = File.open(file)
-    csv = CSV.readlines(file, headers: true, col_sep: ',')
-    csv.each do |row|
-      transaction_hash = {}
-      transaction_hash[:input_type] = row['input_type']
-      transaction_hash[:date] = row['date']
-      transaction_hash[:value] = row['value'].to_i.abs
-      transaction_hash[:installments] = row['installments']
-      transaction_hash[:tag_id] = find_tag_id(row['subcategory'])
-      transaction_hash[:user_id] = current_user.id
-      Transaction.create(transaction_hash)
-    end
+    csv = CSV.readlines(file).to_a
+    
+    return redirect_to transactions_path, notice: "O cabeçalho da tabela deve conter somente as seguintes colunas ['input_type', 'date', 'value', 'installments', 'tag_id']" if confirm_header(csv.first)
+    binding.pry
+    HardJob.perform_async(@user.id, csv.first, csv.drop(1))
+
     redirect_to transactions_path, notice: "Import done!"
   end
 
-  def find_tag_id(subcategory)
-    Tag.find_by(subcategory: subcategory).id
-  end
+  # def perform(header, table)
+  #   table.each do |row|
+  #     transaction_hash = Hash[header.zip(row)]
+  #     transaction_hash["tag_id"] = Tag.find_by(subcategory: transaction_hash["tag_id"]).id
+  #     transaction_hash["user_id"] = current_user.id
+  #     Transaction.create(transaction_hash)
+  #   end
+  # end
 
   private
+    def confirm_header(header)
+      true_header = ["input_type", "date", "value", "installments", "tag_id"]
+      return true if header - true_header != true_header - header
+    end
+
     def set_user
       @user = current_user
     end

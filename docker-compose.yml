@@ -9,19 +9,29 @@ services:
       - "3001:3001"
     depends_on:
       - sidekiq
+    environment:
+      - REDIS_URL_SIDEKIQ=redis://redis:6379/1
+    tty: true
+    stdin_open: true
 
   redis:
-    image: redis:3.2-alpine
-    command: redis-server --port 7479
+    image: 'redis:6-alpine'
+    command: redis-server
     ports:
-      - "7479:7479"
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
 
   sidekiq:
+    depends_on:
+      - 'redis'
     build: .
     command: bundle exec sidekiq
-    depends_on:
-      - redis
     volumes:
-      - .:/finance-app
-    env_file:
-      - .env
+      - '.:/finance-app'
+      - '/finance-app/tmp' # don't mount tmp directory
+    environment:
+      - REDIS_URL_SIDEKIQ=redis://redis:6379/1
+
+volumes:
+  redis:
