@@ -21,6 +21,8 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
+    raise StandardError  => "Transaction date cannot be greater than the current date" if confirm_date_transaction(transaction_params["date"]) 
+    
     @transaction = @user.transactions.new(transaction_params)
     
     respond_to do |format|
@@ -36,6 +38,8 @@ class TransactionsController < ApplicationController
 
   # PATCH/PUT /transactions/1 or /transactions/1.json
   def update
+    raise InvalidDate => "Transaction date cannot be greater than the current date" if confirm_date_transaction(transaction_params["date"]) 
+
     respond_to do |format|
       if @transaction.update(transaction_params)
         format.html { redirect_to transactions_url(@user), notice: "Transaction was successfully updated." }
@@ -66,7 +70,7 @@ class TransactionsController < ApplicationController
     csv = CSV.readlines(file).to_a
     
     return redirect_to transactions_path, notice: "O cabeçalho da tabela deve conter somente as seguintes colunas ['input_type', 'date', 'value', 'installments', 'tag_id']" if confirm_header(csv.first)
-    binding.pry
+    
     HardJob.perform_async(@user.id, csv.first, csv.drop(1))
 
     redirect_to transactions_path, notice: "Import done!"
@@ -85,6 +89,11 @@ class TransactionsController < ApplicationController
     def confirm_header(header)
       true_header = ["input_type", "date", "value", "installments", "tag_id"]
       return true if header - true_header != true_header - header
+    end
+
+    def confirm_date_transaction(date) 
+      return Date.parse(date) > Date.today unless date == nil
+      false
     end
 
     def set_user
